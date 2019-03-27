@@ -1,0 +1,16 @@
+package design
+
+import . "goa.design/goa/dsl"
+
+var RefInt64 = ResultType("application/vnd.ref-int64+json", func() {
+	Description("RefInt64")
+	Attributes(func() {
+		Attribute("id", Int64)
+		Attribute("name", String)
+		Required("id", "name")
+	})
+	View("default", func() {
+		Attribute("id")
+		Attribute("name")
+	})
+})
