@@ -92,6 +92,10 @@ func DecodeListResponse(decoder func(*http.Response) goahttp.Decoder, restoreBod
 			if err != nil {
 				return nil, goahttp.ErrDecodingError("people", "list", err)
 			}
+			err = ValidateListResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("people", "list", err)
+			}
 			var (
 				xTotalCount string
 			)
@@ -103,7 +107,7 @@ func DecodeListResponse(decoder func(*http.Response) goahttp.Decoder, restoreBod
 			if err != nil {
 				return nil, goahttp.ErrValidationError("people", "list", err)
 			}
-			res := NewListResultOK(body, xTotalCount)
+			res := NewListResultOK(&body, xTotalCount)
 			return res, nil
 		default:
 			body, _ := ioutil.ReadAll(resp.Body)

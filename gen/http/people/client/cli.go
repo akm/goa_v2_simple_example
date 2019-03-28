@@ -82,7 +82,7 @@ func BuildCreatePayload(peopleCreateBody string) (*people.CreatePayload, error) 
 	{
 		err = json.Unmarshal([]byte(peopleCreateBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, example of valid JSON:\n%s", "'{\n      \"memo\": \"Laudantium quae non voluptas.\",\n      \"name\": \"Ex quidem fuga nesciunt.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, example of valid JSON:\n%s", "'{\n      \"memo\": \"Saepe dolorem.\",\n      \"name\": \"Dolorem sed blanditiis.\"\n   }'")
 		}
 	}
 	if err != nil {

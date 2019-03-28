@@ -211,8 +211,8 @@ create
 
 Example:
     `+os.Args[0]+` people create --body '{
-      "memo": "Laudantium quae non voluptas.",
-      "name": "Ex quidem fuga nesciunt."
+      "memo": "Saepe dolorem.",
+      "name": "Dolorem sed blanditiis."
    }'
 `, os.Args[0])
 }

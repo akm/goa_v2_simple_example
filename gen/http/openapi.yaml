@@ -48,9 +48,9 @@ paths:
         "200":
           description: OK response.
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Person'
+            $ref: '#/definitions/PeopleListResponseBody'
+            required:
+            - people
           headers:
             X-Total-Count:
               type: string
@@ -170,7 +170,7 @@ definitions:
         example: Necessitatibus voluptates ut labore ut est blanditiis.
       name:
         type: string
-        example: Et saepe quae accusamus sit et.
+        example: Sit et.
     example:
       memo: Autem numquam nesciunt rem sunt.
       name: Magni illum quia distinctio.
@@ -182,15 +182,15 @@ definitions:
     properties:
       id:
         type: integer
-        example: 2834877647120885600
+        example: 7196472068798786997
         format: int64
       name:
         type: string
-        example: Rerum accusamus odio sint tenetur.
+        example: Accusamus odio sint tenetur rerum libero.
     description: CreateResponseBody result type (default view)
     example:
-      id: 2391563244230574720
-      name: Voluptates rerum quo.
+      id: 3684579061264811198
+      name: Quo eaque quos asperiores corrupti.
   PeopleDeleteResponseBody:
     title: 'Mediatype identifier: application/vnd.person+json; view=default'
     type: object
@@ -206,6 +206,25 @@ definitions:
     example:
       id: 2487679091340826885
       name: Molestiae adipisci officiis voluptatum ex.
+  PeopleListResponseBody:
+    title: PeopleListResponseBody
+    type: object
+    properties:
+      people:
+        $ref: '#/definitions/PersonResponseBodyCollection'
+    example:
+      people:
+      - id: 5482678800781459665
+        memo: Laudantium quae non voluptas.
+        name: Ex quidem fuga nesciunt.
+      - id: 5482678800781459665
+        memo: Laudantium quae non voluptas.
+        name: Ex quidem fuga nesciunt.
+      - id: 5482678800781459665
+        memo: Laudantium quae non voluptas.
+        name: Ex quidem fuga nesciunt.
+    required:
+    - people
   PeopleShowResponseBody:
     title: 'Mediatype identifier: application/vnd.person+json; view=default'
     type: object
@@ -258,7 +277,7 @@ definitions:
       fault:
         type: boolean
         description: Is the error a server-side fault?
-        example: true
+        example: false
       id:
         type: string
         description: ID is a unique identifier for this particular occurrence of the
@@ -276,18 +295,18 @@ definitions:
       temporary:
         type: boolean
         description: Is the error temporary?
-        example: true
+        example: false
       timeout:
         type: boolean
         description: Is the error a timeout?
-        example: false
+        example: true
     description: Person Validation Error (default view)
     example:
-      fault: true
+      fault: false
       id: 123abc
       message: parameter 'p' must be an integer
       name: bad_request
-      temporary: true
+      temporary: false
       timeout: false
     required:
     - name
@@ -476,7 +495,7 @@ definitions:
     - temporary
     - timeout
     - fault
-  Person:
+  PersonResponseBody:
     title: 'Mediatype identifier: application/vnd.person+json; view=default'
     type: object
     properties:
@@ -487,7 +506,27 @@ definitions:
       name:
         type: string
         example: Nemo temporibus reprehenderit et quia.
-    description: Person result type (default view)
+    description: PersonResponseBody result type (default view)
     example:
       id: 9215743287182142485
       name: Id assumenda vel.
+  PersonResponseBodyCollection:
+    title: 'Mediatype identifier: application/vnd.person+json; type=collection; view=default'
+    type: array
+    items:
+      $ref: '#/definitions/PersonResponseBody'
+    description: PersonCollectionResponseBody is the result type for an array of PersonResponseBody
+      (default view)
+    example:
+    - id: 5482678800781459665
+      memo: Laudantium quae non voluptas.
+      name: Ex quidem fuga nesciunt.
+    - id: 5482678800781459665
+      memo: Laudantium quae non voluptas.
+      name: Ex quidem fuga nesciunt.
+    - id: 5482678800781459665
+      memo: Laudantium quae non voluptas.
+      name: Ex quidem fuga nesciunt.
+    - id: 5482678800781459665
+      memo: Laudantium quae non voluptas.
+      name: Ex quidem fuga nesciunt.

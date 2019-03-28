@@ -29,7 +29,9 @@ type UpdateRequestBody struct {
 
 // ListResponseBody is the type of the "people" service "list" endpoint HTTP
 // response body.
-type ListResponseBody []*Person
+type ListResponseBody struct {
+	People PersonCollectionResponseBody `form:"people,omitempty" json:"people,omitempty" xml:"people,omitempty"`
+}
 
 // CreateResponseBody is the type of the "people" service "create" endpoint
 // HTTP response body.
@@ -152,8 +154,11 @@ type DeleteNotFoundResponseBody struct {
 	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
 }
 
-// Person is used to define fields on response body types.
-type Person struct {
+// PersonCollectionResponseBody is used to define fields on response body types.
+type PersonCollectionResponseBody []*PersonResponseBody
+
+// PersonResponseBody is used to define fields on response body types.
+type PersonResponseBody struct {
 	ID   *int64  `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 	Memo *string `form:"memo,omitempty" json:"memo,omitempty" xml:"memo,omitempty"`
@@ -181,20 +186,18 @@ func NewUpdateRequestBody(p *people.UpdatePayload) *UpdateRequestBody {
 
 // NewListResultOK builds a "people" service "list" endpoint result from a HTTP
 // "OK" response.
-func NewListResultOK(body []*Person, xTotalCount string) *people.ListResult {
-	v := make([]*people.Person, len(body))
-	for i, val := range body {
-		v[i] = &people.Person{
+func NewListResultOK(body *ListResponseBody, xTotalCount string) *people.ListResult {
+	v := &people.ListResult{}
+	v.People = make([]*people.Person, len(body.People))
+	for i, val := range body.People {
+		v.People[i] = &people.Person{
 			ID:   val.ID,
 			Name: val.Name,
 			Memo: val.Memo,
 		}
 	}
-	res := &people.ListResult{
-		People: v,
-	}
-	res.XTotalCount = xTotalCount
-	return res
+	v.XTotalCount = xTotalCount
+	return v
 }
 
 // NewCreatePersonCreated builds a "people" service "create" endpoint result
@@ -305,6 +308,14 @@ func NewDeleteNotFound(body *DeleteNotFoundResponseBody) *goa.ServiceError {
 		Fault:     *body.Fault,
 	}
 	return v
+}
+
+// ValidateListResponseBody runs the validations defined on ListResponseBody
+func ValidateListResponseBody(body *ListResponseBody) (err error) {
+	if body.People == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("people", "body"))
+	}
+	return
 }
 
 // ValidateUpdateResponseBody runs the validations defined on UpdateResponseBody

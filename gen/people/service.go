@@ -58,7 +58,7 @@ type ListPayload struct {
 
 // ListResult is the result type of the people service list method.
 type ListResult struct {
-	People      []*Person
+	People      PersonCollection
 	XTotalCount string
 }
 
@@ -95,6 +95,8 @@ type PersonPayload struct {
 type DeletePayload struct {
 	ID int64
 }
+
+type PersonCollection []*Person
 
 // MakeNotFound builds a goa.ServiceError from an error.
 func MakeNotFound(err error) *goa.ServiceError {

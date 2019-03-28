@@ -25,7 +25,7 @@ func EncodeListResponse(encoder func(context.Context, http.ResponseWriter) goaht
 	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
 		res := v.(*people.ListResult)
 		enc := encoder(ctx, w)
-		body := NewPerson(res)
+		body := NewListResponseBody(res)
 		w.Header().Set("X-Total-Count", res.XTotalCount)
 		w.WriteHeader(http.StatusOK)
 		return enc.Encode(body)

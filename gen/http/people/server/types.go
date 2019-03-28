@@ -29,7 +29,9 @@ type UpdateRequestBody struct {
 
 // ListResponseBody is the type of the "people" service "list" endpoint HTTP
 // response body.
-type ListResponseBody []*Person
+type ListResponseBody struct {
+	People PersonCollectionResponseBody `form:"people" json:"people" xml:"people"`
+}
 
 // CreateResponseBody is the type of the "people" service "create" endpoint
 // HTTP response body.
@@ -173,22 +175,28 @@ type DeleteNotFoundResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
-// Person is used to define fields on response body types.
-type Person struct {
+// PersonCollectionResponseBody is used to define fields on response body types.
+type PersonCollectionResponseBody []*PersonResponseBody
+
+// PersonResponseBody is used to define fields on response body types.
+type PersonResponseBody struct {
 	ID   *int64  `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 	Memo *string `form:"memo,omitempty" json:"memo,omitempty" xml:"memo,omitempty"`
 }
 
-// NewPerson builds the HTTP response body from the result of the "list"
-// endpoint of the "people" service.
-func NewPerson(res *people.ListResult) []*Person {
-	body := make([]*Person, len(res.People))
-	for i, val := range res.People {
-		body[i] = &Person{
-			ID:   val.ID,
-			Name: val.Name,
-			Memo: val.Memo,
+// NewListResponseBody builds the HTTP response body from the result of the
+// "list" endpoint of the "people" service.
+func NewListResponseBody(res *people.ListResult) *ListResponseBody {
+	body := &ListResponseBody{}
+	if res.People != nil {
+		body.People = make([]*PersonResponseBody, len(res.People))
+		for i, val := range res.People {
+			body.People[i] = &PersonResponseBody{
+				ID:   val.ID,
+				Name: val.Name,
+				Memo: val.Memo,
+			}
 		}
 	}
 	return body
