@@ -51,7 +51,7 @@ var _ = Service("people", func() {
 			ListQueryStrings()
 			Response(StatusOK, func() {
 				Header(ListTotalCount)
-				Body("people")
+				// Body("people")
 			})
 		})
 	})
