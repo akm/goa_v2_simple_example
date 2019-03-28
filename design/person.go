@@ -39,7 +39,9 @@ var _ = Service("people", func() {
 			ListQueryPayload()
 		})
 		Result(func() {
-			Attribute("people", ArrayOf(Person))
+			Attribute("people", CollectionOf(Person, func() {
+				View("default")
+			}))
 			Attribute(ListTotalCount, String)
 			Required("people", ListTotalCount)
 		})
